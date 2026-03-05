@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { Play, X, ChevronRight, ArrowLeft } from 'lucide-react';
-import Image from 'next/image';
 
 export default function Work() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -249,32 +248,32 @@ export default function Work() {
 
       {/* Full Screen Modal - Category View */}
       {selectedCategory && !selectedVideo && (
-        <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-40 overflow-y-auto">
-          <div className="min-h-screen py-12 px-4">
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-40 overflow-y-auto pt-8">
+          <div className="min-h-screen px-4 pb-12">
             <div className="max-w-7xl mx-auto">
-              {/* Header */}
-              <div className="flex items-center justify-between mb-12">
-                <div className="flex items-center gap-4">
-                  <div className="text-4xl">
+              {/* Header with proper spacing */}
+              <div className="flex items-center justify-between mb-12 gap-8">
+                <div className="flex items-center gap-4 flex-1">
+                  <div className="text-5xl">
                     {getCategoryIcon(selectedCategory)}
                   </div>
-                  <div>
-                    <h2 className="text-4xl font-bold text-white">
+                  <div className="min-w-0">
+                    <h2 className="text-4xl font-bold text-white break-words">
                       {selectedCategory}
                     </h2>
-                    <p className="text-gray-400 mt-1">
+                    <p className="text-gray-400 mt-2">
                       {currentCategoryProjects.length} Videos
                     </p>
                   </div>
                 </div>
 
-                {/* Close Button */}
+                {/* Close Button - Properly visible */}
                 <button
                   onClick={closeCategory}
-                  className="w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 text-white hover:text-amber-400"
+                  className="w-14 h-14 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 text-white hover:text-amber-400 flex-shrink-0"
                   title="Close"
                 >
-                  <X size={24} />
+                  <X size={28} />
                 </button>
               </div>
 
@@ -337,18 +336,18 @@ export default function Work() {
       {/* Video Player Modal */}
       {selectedVideo !== null && (
         <div 
-          className="fixed inset-0 bg-black/98 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/98 backdrop-blur-sm z-50 flex items-center justify-center p-4 pt-20"
           onClick={closeVideoPlayer}
         >
           <div 
-            className="relative w-full max-w-5xl"
+            className="relative w-full max-w-5xl max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header with Back Button and Close Button */}
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-6 gap-4 sticky top-0 bg-black/80 backdrop-blur-sm p-4 rounded-t-lg z-10">
               <button
                 onClick={closeVideoPlayer}
-                className="flex items-center gap-2 text-white hover:text-amber-400 transition-colors text-lg font-semibold"
+                className="flex items-center gap-2 text-white hover:text-amber-400 transition-colors text-lg font-semibold whitespace-nowrap"
                 title="Go Back"
               >
                 <ArrowLeft size={24} />
@@ -357,7 +356,7 @@ export default function Work() {
               
               <button
                 onClick={closeVideoPlayer}
-                className="w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 text-white hover:text-amber-400"
+                className="w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 text-white hover:text-amber-400 flex-shrink-0"
                 title="Close"
               >
                 <X size={28} />
@@ -380,7 +379,7 @@ export default function Work() {
             </div>
 
             {/* Video Title and Description */}
-            <div className="mt-6 text-white">
+            <div className="mt-6 text-white mb-8">
               <h3 className="text-2xl font-bold">
                 {getVideoById(selectedVideo)?.title}
               </h3>
@@ -393,7 +392,7 @@ export default function Work() {
             </div>
 
             {/* Footer Instructions */}
-            <div className="mt-8 text-center text-gray-500 text-sm">
+            <div className="text-center text-gray-500 text-sm pb-4">
               <p>Press ESC or click Back/Close to return to videos</p>
             </div>
           </div>
