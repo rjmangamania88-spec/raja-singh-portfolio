@@ -8,7 +8,7 @@ export default function Skills() {
     },
     {
       category: 'AI Tools',
-      items: ['Seedance 1.5 Veo 3', 'Ideogram AI', 'ChatGPT', 'Gemini Pro'],
+      items: ['Seedance 1.5', 'Veo 3', 'Nano Banana', 'Claude'],
     },
     {
       category: 'Design',
@@ -20,7 +20,7 @@ export default function Skills() {
     },
   ];
 
-  const aiTools = ['Seedance 1.5', 'Google Gemini Pro', 'Nano Banana Pro', 'Ideogram AI', 'ChatGPT'];
+  const aiTools = ['Seedance 1.5', 'Veo 3', 'Google Gemini Pro', 'Nano Banana Pro', 'Ideogram AI', 'ChatGPT', 'Claude'];
 
   return (
     <section id="skills" className="py-24 px-4 relative">
@@ -61,7 +61,7 @@ export default function Skills() {
           <h3 className="text-xl font-semibold text-amber-400 mb-4">
             Specialized AI Tools
           </h3>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {aiTools.map((tool) => (
               <div
                 key={tool}
