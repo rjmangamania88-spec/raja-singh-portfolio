@@ -3,9 +3,9 @@
 export default function Testimonials() {
   const testimonials = [
     {
-      name: 'Creative Director, Pocket FM',
+      name: 'Rahul Vaidya',
       text: 'Raja brings innovation and precision to every project. His AI integration expertise sets him apart.',
-      role: 'Team Lead Supervisor',
+      role: 'Creative Professional',
     },
     {
       name: 'Freelance Clients',
