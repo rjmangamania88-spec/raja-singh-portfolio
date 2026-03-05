@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Play, X, ChevronRight } from 'lucide-react';
+import { Play, X, ChevronRight, ArrowLeft } from 'lucide-react';
+import Image from 'next/image';
 
 export default function Work() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -16,6 +17,7 @@ export default function Work() {
       description: 'Innovative promotional video created with cutting-edge AI technology',
       videoId: 'xHlYZXvhcPw',
       year: '2024',
+      thumbnail: 'https://img.youtube.com/vi/xHlYZXvhcPw/hqdefault.jpg',
     },
     {
       id: 2,
@@ -24,6 +26,7 @@ export default function Work() {
       description: 'Dynamic AI-powered promotional content with stunning visuals',
       videoId: 'CnrTDM4MMHs',
       year: '2024',
+      thumbnail: 'https://img.youtube.com/vi/CnrTDM4MMHs/hqdefault.jpg',
     },
     {
       id: 3,
@@ -32,6 +35,7 @@ export default function Work() {
       description: 'Creative promotional video using advanced AI tools',
       videoId: 'FG4Qq62oanA',
       year: '2024',
+      thumbnail: 'https://img.youtube.com/vi/FG4Qq62oanA/hqdefault.jpg',
     },
     {
       id: 4,
@@ -40,6 +44,7 @@ export default function Work() {
       description: 'Engaging promo showcasing AI video generation capabilities',
       videoId: 'ZbTDhmMvwXA',
       year: '2024',
+      thumbnail: 'https://img.youtube.com/vi/ZbTDhmMvwXA/hqdefault.jpg',
     },
     {
       id: 5,
@@ -48,6 +53,7 @@ export default function Work() {
       description: 'Professional promotional video created with AI technology',
       videoId: 'U1iqlAY0hgM',
       year: '2024',
+      thumbnail: 'https://img.youtube.com/vi/U1iqlAY0hgM/hqdefault.jpg',
     },
     {
       id: 6,
@@ -56,6 +62,7 @@ export default function Work() {
       description: 'Innovative content showcasing AI video generation',
       videoId: 'r9WUUtfpzY8',
       year: '2024',
+      thumbnail: 'https://img.youtube.com/vi/r9WUUtfpzY8/hqdefault.jpg',
     },
     {
       id: 7,
@@ -64,6 +71,7 @@ export default function Work() {
       description: 'Dynamic promotional video with AI-enhanced effects',
       videoId: '8OURTVeedsU',
       year: '2024',
+      thumbnail: 'https://img.youtube.com/vi/8OURTVeedsU/hqdefault.jpg',
     },
     {
       id: 8,
@@ -72,6 +80,7 @@ export default function Work() {
       description: 'Creative AI-powered promotional content',
       videoId: 'WDbRLgzuIsA',
       year: '2024',
+      thumbnail: 'https://img.youtube.com/vi/WDbRLgzuIsA/hqdefault.jpg',
     },
 
     // Cinematic Trailers Section
@@ -82,6 +91,7 @@ export default function Work() {
       description: 'High-impact cinematic trailer with stunning visual effects',
       videoId: 'ys1lmp59fHA',
       year: '2024',
+      thumbnail: 'https://img.youtube.com/vi/ys1lmp59fHA/hqdefault.jpg',
     },
     {
       id: 10,
@@ -90,6 +100,7 @@ export default function Work() {
       description: 'Epic cinematic trailer blending storytelling with cutting-edge effects',
       videoId: 'xNOlbEN0kUE',
       year: '2024',
+      thumbnail: 'https://img.youtube.com/vi/xNOlbEN0kUE/hqdefault.jpg',
     },
 
     // Show Promos Section
@@ -100,6 +111,7 @@ export default function Work() {
       description: 'Cinematic show promotion with seamless motion graphics',
       videoId: 'AESxfmCXHw0',
       year: '2024',
+      thumbnail: 'https://img.youtube.com/vi/AESxfmCXHw0/hqdefault.jpg',
     },
     {
       id: 12,
@@ -108,6 +120,7 @@ export default function Work() {
       description: 'Dynamic show promotion showcasing engaging content',
       videoId: 'IHXjf0VjicI',
       year: '2024',
+      thumbnail: 'https://img.youtube.com/vi/IHXjf0VjicI/hqdefault.jpg',
     },
     {
       id: 13,
@@ -116,6 +129,7 @@ export default function Work() {
       description: 'Professional show promotion with high-quality editing',
       videoId: 'h1DbUntbDaU',
       year: '2024',
+      thumbnail: 'https://img.youtube.com/vi/h1DbUntbDaU/hqdefault.jpg',
     },
   ];
 
@@ -168,6 +182,15 @@ export default function Work() {
 
   const getVideoById = (id: number) => {
     return allProjects.find((p) => p.id === id);
+  };
+
+  const closeVideoPlayer = () => {
+    setSelectedVideo(null);
+  };
+
+  const closeCategory = () => {
+    setSelectedCategory(null);
+    setSelectedVideo(null);
   };
 
   return (
@@ -226,7 +249,7 @@ export default function Work() {
 
       {/* Full Screen Modal - Category View */}
       {selectedCategory && !selectedVideo && (
-        <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 overflow-y-auto">
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-40 overflow-y-auto">
           <div className="min-h-screen py-12 px-4">
             <div className="max-w-7xl mx-auto">
               {/* Header */}
@@ -247,11 +270,9 @@ export default function Work() {
 
                 {/* Close Button */}
                 <button
-                  onClick={() => {
-                    setSelectedCategory(null);
-                    setSelectedVideo(null);
-                  }}
-                  className="w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 text-white"
+                  onClick={closeCategory}
+                  className="w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 text-white hover:text-amber-400"
+                  title="Close"
                 >
                   <X size={24} />
                 </button>
@@ -265,15 +286,20 @@ export default function Work() {
                     onClick={() => setSelectedVideo(project.id)}
                     className="group relative overflow-hidden rounded-2xl cursor-pointer transform transition-all duration-300 hover:scale-105"
                   >
-                    {/* Video Thumbnail */}
+                    {/* Video Thumbnail with Image */}
                     <div className="relative w-full aspect-video bg-black rounded-2xl overflow-hidden">
-                      <div
-                        className="absolute inset-0 opacity-70"
-                        style={{ background: getCategoryColor(project.category) }}
-                      ></div>
+                      {/* YouTube Thumbnail Image */}
+                      <img
+                        src={project.thumbnail}
+                        alt={project.title}
+                        className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+                      />
+
+                      {/* Dark Overlay */}
+                      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-all duration-300"></div>
 
                       {/* Play Button */}
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/50 transition-all duration-300">
+                      <div className="absolute inset-0 flex items-center justify-center">
                         <div className="flex items-center justify-center w-16 h-16 bg-white/90 hover:bg-white rounded-full transition-all duration-300 transform group-hover:scale-110">
                           <Play
                             size={32}
@@ -310,15 +336,33 @@ export default function Work() {
 
       {/* Video Player Modal */}
       {selectedVideo !== null && (
-        <div className="fixed inset-0 bg-black/98 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="relative w-full max-w-5xl">
-            {/* Close Button */}
-            <button
-              onClick={() => setSelectedVideo(null)}
-              className="absolute -top-12 right-0 text-white hover:text-amber-400 transition-colors z-50"
-            >
-              <X size={32} />
-            </button>
+        <div 
+          className="fixed inset-0 bg-black/98 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={closeVideoPlayer}
+        >
+          <div 
+            className="relative w-full max-w-5xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header with Back Button and Close Button */}
+            <div className="flex items-center justify-between mb-4">
+              <button
+                onClick={closeVideoPlayer}
+                className="flex items-center gap-2 text-white hover:text-amber-400 transition-colors text-lg font-semibold"
+                title="Go Back"
+              >
+                <ArrowLeft size={24} />
+                Back
+              </button>
+              
+              <button
+                onClick={closeVideoPlayer}
+                className="w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 text-white hover:text-amber-400"
+                title="Close"
+              >
+                <X size={28} />
+              </button>
+            </div>
 
             {/* Video Player */}
             <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden shadow-2xl">
@@ -346,6 +390,11 @@ export default function Work() {
               <p className="text-amber-400 text-sm mt-4">
                 {getVideoById(selectedVideo)?.year}
               </p>
+            </div>
+
+            {/* Footer Instructions */}
+            <div className="mt-8 text-center text-gray-500 text-sm">
+              <p>Press ESC or click Back/Close to return to videos</p>
             </div>
           </div>
         </div>
