@@ -8,7 +8,7 @@ export default function Skills() {
     },
     {
       category: 'AI Tools',
-      items: ['Runway Gen-2', 'Sora', 'Pika', 'Leonardo AI', 'Haeluo'],
+      items: ['Seedance 1.5 Veo 3', 'Ideogram AI', 'ChatGPT', 'Gemini Pro'],
     },
     {
       category: 'Design',
@@ -20,7 +20,7 @@ export default function Skills() {
     },
   ];
 
-  const aiTools = ['Runway', 'Sora', 'Pika', 'Leonardo AI', 'Haeluo'];
+  const aiTools = ['Seedance 1.5', 'Google Gemini Pro', 'Nano Banana Pro', 'Ideogram AI', 'ChatGPT'];
 
   return (
     <section id="skills" className="py-24 px-4 relative">
@@ -56,7 +56,7 @@ export default function Skills() {
           ))}
         </div>
 
-        {/* AI Tools Highlight */}
+        {/* Specialized AI Tools Highlight */}
         <div className="mt-12 glass-effect border border-amber-400/20 rounded-2xl p-8">
           <h3 className="text-xl font-semibold text-amber-400 mb-4">
             Specialized AI Tools
