@@ -166,60 +166,66 @@ export default function Work() {
     return cat?.color || '';
   };
 
+  const getVideoById = (id: number) => {
+    return allProjects.find((p) => p.id === id);
+  };
+
   return (
-    <section id="work" className="py-24 px-4 relative">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-5xl font-bold mb-4 text-center text-gradient">
-          Featured Work
-        </h2>
-        <p className="text-center text-gray-400 mb-16 text-lg">
-          Click on any category to explore my complete portfolio
-        </p>
+    <>
+      <section id="work" className="py-24 px-4 relative">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-5xl font-bold mb-4 text-center text-gradient">
+            Featured Work
+          </h2>
+          <p className="text-center text-gray-400 mb-16 text-lg">
+            Click on any category to explore my complete portfolio
+          </p>
 
-        {/* Main Category Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          {categories.map((category) => (
-            <button
-              key={category.name}
-              onClick={() => setSelectedCategory(category.name)}
-              className="group relative overflow-hidden rounded-2xl cursor-pointer transform transition-all duration-300 hover:scale-105"
-            >
-              {/* Card Background */}
-              <div
-                className="relative w-full aspect-video rounded-2xl overflow-hidden"
-                style={{ background: category.color }}
+          {/* Main Category Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            {categories.map((category) => (
+              <button
+                key={category.name}
+                onClick={() => setSelectedCategory(category.name)}
+                className="group relative overflow-hidden rounded-2xl cursor-pointer transform transition-all duration-300 hover:scale-105"
               >
-                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all duration-300"></div>
+                {/* Card Background */}
+                <div
+                  className="relative w-full aspect-video rounded-2xl overflow-hidden"
+                  style={{ background: category.color }}
+                >
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all duration-300"></div>
 
-                {/* Content */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
-                  <div className="text-6xl mb-4">{category.icon}</div>
-                  <h3 className="text-3xl font-bold text-white mb-2">
-                    {category.name}
-                  </h3>
-                  <p className="text-gray-200 text-sm mb-4">
-                    {category.description}
-                  </p>
-                  <div className="flex items-center gap-2 text-amber-300 font-semibold">
-                    View {category.count} Videos
-                    <ChevronRight size={20} />
+                  {/* Content */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
+                    <div className="text-6xl mb-4">{category.icon}</div>
+                    <h3 className="text-3xl font-bold text-white mb-2">
+                      {category.name}
+                    </h3>
+                    <p className="text-gray-200 text-sm mb-4">
+                      {category.description}
+                    </p>
+                    <div className="flex items-center gap-2 text-amber-300 font-semibold">
+                      View {category.count} Videos
+                      <ChevronRight size={20} />
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Card Footer */}
-              <div className="bg-gradient-to-r from-black/50 to-black/30 backdrop-blur-sm p-4 border-t border-white/10">
-                <p className="text-amber-400 font-semibold text-center">
-                  {category.count} {category.count === 1 ? 'Video' : 'Videos'}
-                </p>
-              </div>
-            </button>
-          ))}
+                {/* Card Footer */}
+                <div className="bg-gradient-to-r from-black/50 to-black/30 backdrop-blur-sm p-4 border-t border-white/10">
+                  <p className="text-amber-400 font-semibold text-center">
+                    {category.count} {category.count === 1 ? 'Video' : 'Videos'}
+                  </p>
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      </section>
 
       {/* Full Screen Modal - Category View */}
-      {selectedCategory && (
+      {selectedCategory && !selectedVideo && (
         <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 overflow-y-auto">
           <div className="min-h-screen py-12 px-4">
             <div className="max-w-7xl mx-auto">
@@ -256,6 +262,7 @@ export default function Work() {
                 {currentCategoryProjects.map((project) => (
                   <div
                     key={project.id}
+                    onClick={() => setSelectedVideo(project.id)}
                     className="group relative overflow-hidden rounded-2xl cursor-pointer transform transition-all duration-300 hover:scale-105"
                   >
                     {/* Video Thumbnail */}
@@ -266,10 +273,7 @@ export default function Work() {
                       ></div>
 
                       {/* Play Button */}
-                      <button
-                        onClick={() => setSelectedVideo(project.id)}
-                        className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/50 transition-all duration-300"
-                      >
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/50 transition-all duration-300">
                         <div className="flex items-center justify-center w-16 h-16 bg-white/90 hover:bg-white rounded-full transition-all duration-300 transform group-hover:scale-110">
                           <Play
                             size={32}
@@ -277,7 +281,7 @@ export default function Work() {
                             fill="black"
                           />
                         </div>
-                      </button>
+                      </div>
 
                       {/* Text Overlay */}
                       <div className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/90 via-transparent to-transparent">
@@ -306,44 +310,46 @@ export default function Work() {
 
       {/* Video Player Modal */}
       {selectedVideo !== null && (
-        <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/98 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="relative w-full max-w-5xl">
             {/* Close Button */}
             <button
               onClick={() => setSelectedVideo(null)}
-              className="absolute -top-12 right-0 text-white hover:text-amber-400 transition-colors"
+              className="absolute -top-12 right-0 text-white hover:text-amber-400 transition-colors z-50"
             >
               <X size={32} />
             </button>
 
             {/* Video Player */}
-            <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden">
+            <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden shadow-2xl">
               <iframe
                 width="100%"
                 height="100%"
                 src={`https://www.youtube.com/embed/${
-                  allProjects.find((p) => p.id === selectedVideo)?.videoId
-                }?autoplay=1&modestbranding=1&rel=0`}
+                  getVideoById(selectedVideo)?.videoId || ''
+                }?autoplay=1&modestbranding=1&rel=0&fs=1`}
                 title="Video Player"
                 frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
                 allowFullScreen
-                className="w-full h-full"
               ></iframe>
             </div>
 
-            {/* Video Title */}
+            {/* Video Title and Description */}
             <div className="mt-6 text-white">
               <h3 className="text-2xl font-bold">
-                {allProjects.find((p) => p.id === selectedVideo)?.title}
+                {getVideoById(selectedVideo)?.title}
               </h3>
               <p className="text-gray-400 mt-2">
-                {allProjects.find((p) => p.id === selectedVideo)?.description}
+                {getVideoById(selectedVideo)?.description}
+              </p>
+              <p className="text-amber-400 text-sm mt-4">
+                {getVideoById(selectedVideo)?.year}
               </p>
             </div>
           </div>
         </div>
       )}
-    </section>
+    </>
   );
 }
