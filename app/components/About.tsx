@@ -14,7 +14,7 @@ export default function About() {
     { label: 'Experience', value: '6+ Years' },
     { label: 'AI Tools Mastered', value: '10+' },
     { label: 'Projects Completed', value: '100+' },
-    { label: 'Current Role', value: 'Team Lead' },
+    { label: 'Current Role', value: 'AI Promo Creator' },
   ];
 
   return (
@@ -32,7 +32,7 @@ export default function About() {
             </p>
 
             <p className="text-gray-300 text-lg leading-relaxed">
-              Currently leading video production at Pocket FM as Team Lead & Video Editor. My expertise spans AI content generation, motion graphics, and visual storytelling across multiple platforms. I'm passionate about pushing creative boundaries using emerging technologies.
+              Currently working as an AI Promo Creator at Kuku TV. My expertise spans AI content generation, motion graphics, and visual storytelling across multiple platforms. I'm passionate about pushing creative boundaries using emerging technologies.
             </p>
 
             <div className="pt-8 space-y-4">
