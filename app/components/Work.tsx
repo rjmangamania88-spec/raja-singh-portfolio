@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { ExternalLink, Play, X } from 'lucide-react';
+import { Play, X, ChevronRight } from 'lucide-react';
 
 export default function Work() {
-  const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<number | null>(null);
 
-  const projects = [
+  const allProjects = [
     // AI Generated Promos Section
     {
       id: 1,
@@ -119,23 +119,51 @@ export default function Work() {
     },
   ];
 
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'AI Promos':
-        return 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-      case 'Trailers':
-        return 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)';
-      case 'ShowPromos':
-        return 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)';
-      default:
-        return 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-    }
+  const categories = [
+    {
+      name: 'AI Promos',
+      icon: '🤖',
+      description: 'Innovative promotional videos created with cutting-edge AI technology',
+      count: 8,
+      color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    },
+    {
+      name: 'Trailers',
+      icon: '🎬',
+      description: 'High-impact cinematic trailers with stunning visual effects',
+      count: 2,
+      color: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
+    },
+    {
+      name: 'ShowPromos',
+      icon: '📺',
+      description: 'Professional show promotions with seamless motion graphics',
+      count: 3,
+      color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+    },
+  ];
+
+  const getCategoryProjects = (categoryName: string) => {
+    const categoryMap: { [key: string]: string } = {
+      'AI Promos': 'AI Promos',
+      'Trailers': 'Trailers',
+      'ShowPromos': 'ShowPromos',
+    };
+    return allProjects.filter((p) => p.category === categoryMap[categoryName]);
   };
 
-  const groupedProjects = {
-    'AI Promos': projects.filter((p) => p.category === 'AI Promos'),
-    'Trailers': projects.filter((p) => p.category === 'Trailers'),
-    'ShowPromos': projects.filter((p) => p.category === 'ShowPromos'),
+  const currentCategoryProjects = selectedCategory
+    ? getCategoryProjects(selectedCategory)
+    : [];
+
+  const getCategoryIcon = (categoryName: string) => {
+    const cat = categories.find((c) => c.name === categoryName);
+    return cat?.icon || '';
+  };
+
+  const getCategoryColor = (categoryName: string) => {
+    const cat = categories.find((c) => c.name === categoryName);
+    return cat?.color || '';
   };
 
   return (
@@ -145,218 +173,141 @@ export default function Work() {
           Featured Work
         </h2>
         <p className="text-center text-gray-400 mb-16 text-lg">
-          Watch my complete portfolio of trailers, AI promos, and show promotions
+          Click on any category to explore my complete portfolio
         </p>
 
-        {/* AI Generated Promos Section */}
-        <div className="mb-20">
-          <h3 className="text-3xl font-bold text-amber-400 mb-8 flex items-center gap-3">
-            <span className="text-2xl">🤖</span> AI Generated Promos
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {groupedProjects['AI Promos'].map((project) => (
+        {/* Main Category Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+          {categories.map((category) => (
+            <button
+              key={category.name}
+              onClick={() => setSelectedCategory(category.name)}
+              className="group relative overflow-hidden rounded-2xl cursor-pointer transform transition-all duration-300 hover:scale-105"
+            >
+              {/* Card Background */}
               <div
-                key={project.id}
-                onMouseEnter={() => setHoveredProject(project.id)}
-                onMouseLeave={() => setHoveredProject(null)}
-                className="group relative overflow-hidden rounded-2xl cursor-pointer transform transition-all duration-300 hover:scale-105"
+                className="relative w-full aspect-video rounded-2xl overflow-hidden"
+                style={{ background: category.color }}
               >
-                {/* Video Thumbnail */}
-                <div className="relative w-full aspect-video bg-black rounded-2xl overflow-hidden">
-                  <div
-                    className="absolute inset-0 opacity-70"
-                    style={{ background: getCategoryColor(project.category) }}
-                  ></div>
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all duration-300"></div>
 
-                  {/* Play Button */}
-                  <button
-                    onClick={() => setSelectedVideo(project.id)}
-                    className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/50 transition-all duration-300"
-                  >
-                    <div className="flex items-center justify-center w-16 h-16 bg-white/90 hover:bg-white rounded-full transition-all duration-300 transform group-hover:scale-110">
-                      <Play
-                        size={32}
-                        className="text-black ml-1"
-                        fill="black"
-                      />
-                    </div>
-                  </button>
-
-                  {/* Text Overlay */}
-                  <div className="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-black/90 via-transparent to-transparent">
-                    <h4 className="text-lg font-bold text-white">
-                      {project.title}
-                    </h4>
-                    <p className="text-amber-400 text-xs font-semibold uppercase tracking-widest mt-1">
-                      {project.category}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Project Info */}
-                <div className="bg-gradient-to-br from-amber-500/5 to-blue-500/5 border border-amber-400/20 rounded-b-2xl p-4 backdrop-blur-sm">
-                  <p className="text-gray-300 text-sm leading-relaxed mb-3">
-                    {project.description}
+                {/* Content */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
+                  <div className="text-6xl mb-4">{category.icon}</div>
+                  <h3 className="text-3xl font-bold text-white mb-2">
+                    {category.name}
+                  </h3>
+                  <p className="text-gray-200 text-sm mb-4">
+                    {category.description}
                   </p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs bg-amber-500/20 border border-amber-400/50 text-amber-400 px-2 py-1 rounded">
-                      {project.year}
-                    </span>
-                    <button
-                      onClick={() => setSelectedVideo(project.id)}
-                      className="flex items-center gap-1 text-amber-400 text-sm font-semibold hover:text-amber-300 transition-colors"
-                    >
-                      Watch
-                      <ExternalLink size={14} />
-                    </button>
+                  <div className="flex items-center gap-2 text-amber-300 font-semibold">
+                    View {category.count} Videos
+                    <ChevronRight size={20} />
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
 
-        {/* Cinematic Trailers Section */}
-        <div className="mb-20">
-          <h3 className="text-3xl font-bold text-amber-400 mb-8 flex items-center gap-3">
-            <span className="text-2xl">🎬</span> Cinematic Trailers
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {groupedProjects['Trailers'].map((project) => (
-              <div
-                key={project.id}
-                onMouseEnter={() => setHoveredProject(project.id)}
-                onMouseLeave={() => setHoveredProject(null)}
-                className="group relative overflow-hidden rounded-2xl cursor-pointer transform transition-all duration-300 hover:scale-105"
-              >
-                {/* Video Thumbnail */}
-                <div className="relative w-full aspect-video bg-black rounded-2xl overflow-hidden">
-                  <div
-                    className="absolute inset-0 opacity-70"
-                    style={{ background: getCategoryColor(project.category) }}
-                  ></div>
-
-                  {/* Play Button */}
-                  <button
-                    onClick={() => setSelectedVideo(project.id)}
-                    className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/50 transition-all duration-300"
-                  >
-                    <div className="flex items-center justify-center w-16 h-16 bg-white/90 hover:bg-white rounded-full transition-all duration-300 transform group-hover:scale-110">
-                      <Play
-                        size={32}
-                        className="text-black ml-1"
-                        fill="black"
-                      />
-                    </div>
-                  </button>
-
-                  {/* Text Overlay */}
-                  <div className="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-black/90 via-transparent to-transparent">
-                    <h4 className="text-lg font-bold text-white">
-                      {project.title}
-                    </h4>
-                    <p className="text-amber-400 text-xs font-semibold uppercase tracking-widest mt-1">
-                      {project.category}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Project Info */}
-                <div className="bg-gradient-to-br from-amber-500/5 to-blue-500/5 border border-amber-400/20 rounded-b-2xl p-4 backdrop-blur-sm">
-                  <p className="text-gray-300 text-sm leading-relaxed mb-3">
-                    {project.description}
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs bg-amber-500/20 border border-amber-400/50 text-amber-400 px-2 py-1 rounded">
-                      {project.year}
-                    </span>
-                    <button
-                      onClick={() => setSelectedVideo(project.id)}
-                      className="flex items-center gap-1 text-amber-400 text-sm font-semibold hover:text-amber-300 transition-colors"
-                    >
-                      Watch
-                      <ExternalLink size={14} />
-                    </button>
-                  </div>
-                </div>
+              {/* Card Footer */}
+              <div className="bg-gradient-to-r from-black/50 to-black/30 backdrop-blur-sm p-4 border-t border-white/10">
+                <p className="text-amber-400 font-semibold text-center">
+                  {category.count} {category.count === 1 ? 'Video' : 'Videos'}
+                </p>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Show Promos Section */}
-        <div className="mb-20">
-          <h3 className="text-3xl font-bold text-amber-400 mb-8 flex items-center gap-3">
-            <span className="text-2xl">📺</span> Show Promos
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {groupedProjects['ShowPromos'].map((project) => (
-              <div
-                key={project.id}
-                onMouseEnter={() => setHoveredProject(project.id)}
-                onMouseLeave={() => setHoveredProject(null)}
-                className="group relative overflow-hidden rounded-2xl cursor-pointer transform transition-all duration-300 hover:scale-105"
-              >
-                {/* Video Thumbnail */}
-                <div className="relative w-full aspect-video bg-black rounded-2xl overflow-hidden">
-                  <div
-                    className="absolute inset-0 opacity-70"
-                    style={{ background: getCategoryColor(project.category) }}
-                  ></div>
-
-                  {/* Play Button */}
-                  <button
-                    onClick={() => setSelectedVideo(project.id)}
-                    className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/50 transition-all duration-300"
-                  >
-                    <div className="flex items-center justify-center w-16 h-16 bg-white/90 hover:bg-white rounded-full transition-all duration-300 transform group-hover:scale-110">
-                      <Play
-                        size={32}
-                        className="text-black ml-1"
-                        fill="black"
-                      />
-                    </div>
-                  </button>
-
-                  {/* Text Overlay */}
-                  <div className="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-black/90 via-transparent to-transparent">
-                    <h4 className="text-lg font-bold text-white">
-                      {project.title}
-                    </h4>
-                    <p className="text-amber-400 text-xs font-semibold uppercase tracking-widest mt-1">
-                      {project.category}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Project Info */}
-                <div className="bg-gradient-to-br from-amber-500/5 to-blue-500/5 border border-amber-400/20 rounded-b-2xl p-4 backdrop-blur-sm">
-                  <p className="text-gray-300 text-sm leading-relaxed mb-3">
-                    {project.description}
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs bg-amber-500/20 border border-amber-400/50 text-amber-400 px-2 py-1 rounded">
-                      {project.year}
-                    </span>
-                    <button
-                      onClick={() => setSelectedVideo(project.id)}
-                      className="flex items-center gap-1 text-amber-400 text-sm font-semibold hover:text-amber-300 transition-colors"
-                    >
-                      Watch
-                      <ExternalLink size={14} />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Video Modal - Full Screen Player */}
+      {/* Full Screen Modal - Category View */}
+      {selectedCategory && (
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 overflow-y-auto">
+          <div className="min-h-screen py-12 px-4">
+            <div className="max-w-7xl mx-auto">
+              {/* Header */}
+              <div className="flex items-center justify-between mb-12">
+                <div className="flex items-center gap-4">
+                  <div className="text-4xl">
+                    {getCategoryIcon(selectedCategory)}
+                  </div>
+                  <div>
+                    <h2 className="text-4xl font-bold text-white">
+                      {selectedCategory}
+                    </h2>
+                    <p className="text-gray-400 mt-1">
+                      {currentCategoryProjects.length} Videos
+                    </p>
+                  </div>
+                </div>
+
+                {/* Close Button */}
+                <button
+                  onClick={() => {
+                    setSelectedCategory(null);
+                    setSelectedVideo(null);
+                  }}
+                  className="w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 text-white"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              {/* Videos Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {currentCategoryProjects.map((project) => (
+                  <div
+                    key={project.id}
+                    className="group relative overflow-hidden rounded-2xl cursor-pointer transform transition-all duration-300 hover:scale-105"
+                  >
+                    {/* Video Thumbnail */}
+                    <div className="relative w-full aspect-video bg-black rounded-2xl overflow-hidden">
+                      <div
+                        className="absolute inset-0 opacity-70"
+                        style={{ background: getCategoryColor(project.category) }}
+                      ></div>
+
+                      {/* Play Button */}
+                      <button
+                        onClick={() => setSelectedVideo(project.id)}
+                        className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/50 transition-all duration-300"
+                      >
+                        <div className="flex items-center justify-center w-16 h-16 bg-white/90 hover:bg-white rounded-full transition-all duration-300 transform group-hover:scale-110">
+                          <Play
+                            size={32}
+                            className="text-black ml-1"
+                            fill="black"
+                          />
+                        </div>
+                      </button>
+
+                      {/* Text Overlay */}
+                      <div className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/90 via-transparent to-transparent">
+                        <h4 className="text-lg font-bold text-white">
+                          {project.title}
+                        </h4>
+                        <p className="text-amber-400 text-xs font-semibold mt-1">
+                          {project.year}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Project Info */}
+                    <div className="bg-gradient-to-br from-amber-500/5 to-blue-500/5 border border-amber-400/20 rounded-b-2xl p-4 backdrop-blur-sm">
+                      <p className="text-gray-300 text-sm leading-relaxed">
+                        {project.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Video Player Modal */}
       {selectedVideo !== null && (
-        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="relative w-full max-w-4xl">
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="relative w-full max-w-5xl">
             {/* Close Button */}
             <button
               onClick={() => setSelectedVideo(null)}
@@ -371,7 +322,7 @@ export default function Work() {
                 width="100%"
                 height="100%"
                 src={`https://www.youtube.com/embed/${
-                  projects.find((p) => p.id === selectedVideo)?.videoId
+                  allProjects.find((p) => p.id === selectedVideo)?.videoId
                 }?autoplay=1&modestbranding=1&rel=0`}
                 title="Video Player"
                 frameBorder="0"
@@ -382,12 +333,12 @@ export default function Work() {
             </div>
 
             {/* Video Title */}
-            <div className="mt-4 text-white">
+            <div className="mt-6 text-white">
               <h3 className="text-2xl font-bold">
-                {projects.find((p) => p.id === selectedVideo)?.title}
+                {allProjects.find((p) => p.id === selectedVideo)?.title}
               </h3>
               <p className="text-gray-400 mt-2">
-                {projects.find((p) => p.id === selectedVideo)?.description}
+                {allProjects.find((p) => p.id === selectedVideo)?.description}
               </p>
             </div>
           </div>
